@@ -240,6 +240,12 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 40
 
+    # Pinned rather than left on wolfssl/wolfssl's default branch, so an
+    # upstream wolfSSL change can't silently break this job. Matches the
+    # ref singlethread-check.yml and x509-interop.yml already pin to.
+    env:
+      WOLFSSL_REF: v5.9.1-stable
+
     defaults:
       run:
         shell: msys2 {0}
@@ -261,6 +267,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         repository: wolfssl/wolfssl
+        ref: ${{ env.WOLFSSL_REF }}
         path: wolfssl
 
     - name: Build and install wolfssl
